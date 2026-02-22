@@ -1,70 +1,62 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { generateClient } from "aws-amplify/data";
-import type { Schema } from "@/amplify/data/resource";
-import "./../app/app.css";
-import { Amplify } from "aws-amplify";
-import outputs from "@/amplify_outputs.json";
-import "@aws-amplify/ui-react/styles.css";
-import  {Authenticator}  from '@aws-amplify/ui-react'
+//estoy usando Next.js 13+
 
-Amplify.configure(outputs);
+import { useForm } from 'react-hook-form';
+import Link from "next/link";
 
-const client = generateClient<Schema>();
-
-export default function App() {
-  const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
-
-  function listTodos() {
-    client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
-    });
-  }
-
-  useEffect(() => {
-    listTodos();
-  }, []);
-
-  function createTodo() {
-    client.models.Todo.create({
-      content: window.prompt("Todo content"),
-    });
-  }
-
-  function deleteTodo(id: string){
-  client.models.Todo.delete({ id});
-     }
-
+export default function Page() {
   return (
-   <Authenticator>
-     {({signOut, user} ) => (
-    <main>
-      <h1>My todos</h1>
-      <button onClick={createTodo}>+ new</button>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id} 
-          onClick={ ()=> deleteTodo(todo.id)}>{todo.content}</li>
-
-        ))}
-      </ul>
-      <button onClick={signOut}>     
-        Cerrar Sesión
-      </button>
-
-
-      <div>
-         Sistema ISO
-        <br />
-        <a href="https://docs.amplify.aws/nextjs/start/quickstart/nextjs-app-router-client-components/">
-          Review next steps of this tutorial.
-        </a>
-      </div>
-    </main>
-
-
-     )}
-    </Authenticator>
+    <div style={{ padding: "40px" }}>
+      <h1>Home Page</h1>
+      <nav>
+        <Link href="/about" style={{ marginRight: "15px" }}>About</Link>
+        <Link href="/protected" style={{ marginRight: "15px" }}>Protected</Link>
+      </nav>
+      <p>Bienvenido a tu app Next.js 13+ con App Router y AWS Amplify.</p>
+    </div>
   );
 }
+
+
+
+
+//<"use client";
+
+//<import { FC, useEffect } from "react";
+//<import { Authenticator } from "@aws-amplify/ui-react";
+//<import { Hub } from "@aws-amplify/core";
+//<import { Link, Routes, Route, useNavigate } from "react-router-dom";
+//<import { Amplify } from "aws-amplify";
+//import config from "/aws-exports";
+//<import config from './aws-exports'
+//<import type { AppProps } from 'next/app';
+
+
+//<Amplify.configure(config);
+
+//<export default function MyApp({ Component, pageProps }: AppProps) {
+//<  return <Component {...pageProps} />;
+//<}
+
+
+//<div className="page">
+// <Header />
+// <Hero />
+//  <VideoSection />
+// </div>
+
+//<main>
+//  <h1>My todos</h1>
+//  <button onClick={createTodo}>+ new</button>
+//  <ul>
+//    {todos.map((todo) => (
+//      <li key={todo.id}
+//        onClick={() => deleteTodo(todo.id)}>{todo.content}</li>
+
+//    ))}
+//  </ul>
+//  <button>
+//    Cerrar Sesión
+//  </button>
+//</main>
